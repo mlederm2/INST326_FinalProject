@@ -1,3 +1,5 @@
 Hello, my name is Derek. This is my comment
 """ Hello my name is Joel. That is my comment."""
 Hi, this is Jennifer, i will do the movement algorithm.
+This is a text file started by Moshe, everybody should be able to add a line or 
+two of text to this file and push it to the repo on Github
