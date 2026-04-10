@@ -52,3 +52,56 @@ class RPG:
 =======
     
 >>>>>>> 1a49229eb61d7e4bf440a3140eb08a46b7e75fac
+
+def move_player(position: tuple[int, int], direction: str, game_map: 
+        list[list[str]]) -> tuple[int, int]:
+    """
+    An algorithm that controls how the player moves around the map.
+
+    It checks the direction the player wants to move and makes sure the move is
+    valid.
+    If the space is open and within the map, the player moves there. If not, 
+    the player stays in the same spot.
+
+    Args:
+        position (tuple[int, int]): The player’s current location on the map.
+        direction (str): The direction the player wants to move 
+        ("up", "down", "left", "right").
+        game_map (list[list[str]]): A grid that represents the map and 
+        shows open or blocked spaces.
+
+    Returns:
+        tuple[int, int]: The updated position of the player after the move.
+
+    Raises:
+        ValueError: If the direction is invalid.
+    """
+
+    row, col = position
+
+    moves = {
+        "up": (-1, 0),
+        "down": (1, 0),
+        "left": (0, -1),
+        "right": (0, 1)
+    }
+
+    if direction not in moves:
+        raise ValueError("Invalid direction. Choose up, down, left, or right.")
+
+    d_row, d_col = moves[direction]
+    new_row = row + d_row
+    new_col = col + d_col
+
+    for r in range(len(game_map)):
+        for c in range(len(game_map[0])):
+
+            if r == new_row and c == new_col:
+
+                
+                if game_map[r][c] != "#":
+                    return (r, c)
+
+                return position
+
+    return position
