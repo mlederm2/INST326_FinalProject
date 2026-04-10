@@ -8,6 +8,7 @@
 class RPG:
     """ the big class for the RPG game, full runner
     """
+<<<<<<< HEAD
     
     def inventory_algorithm(inventory, item_name, player_hp, enemy_frozen):
         """ 
@@ -48,3 +49,6 @@ class RPG:
         print(f"'{item_name}' has been removed from your inventory.")
         return player_hp, enemy_frozen
 
+=======
+    
+>>>>>>> 1a49229eb61d7e4bf440a3140eb08a46b7e75fac
