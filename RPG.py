@@ -1,6 +1,6 @@
 import random
 
-def enemy_reaction(enemy_name, current_hp, max_hp, incoming_damage, is_transformed):
+def enemy_reaction(self, incoming_damage, current_hp, is_transformed):
     """
     Handles the enemy's combative response when attacked.
     
@@ -12,22 +12,31 @@ def enemy_reaction(enemy_name, current_hp, max_hp, incoming_damage, is_transform
         is_transformed (bool): Whether the monster has already mutated.
         
     Returns:
-        tuple: (actual_damage_taken, updated_transform_status)
+        tuple: (Damage Dealt, Current Health)
+        
+    Written By Derek Happy, Edits by Moshe Lederman
     """
     
-    if random.random() < 0.20:
-        print(f"The {enemy_name} dodged your attack! 0 damage dealt.")
-        return 0, is_transformed
-
-   
+    outgoing_damage = 0
     projected_hp = current_hp - incoming_damage
-    if projected_hp <= (max_hp * 0.3) and not is_transformed and projected_hp > 0:
-        print(f"\n--- WARNING: {enemy_name} is evolving! ---")
-        print(f"The monster glows with a dark aura and hardens its skin.")
+    
+    #gives the enemy a random chance to dodge incoming attacks
+    if random.random() < 0.20:
+        #dodging attacks prevents damage from being dealt
+        print(f"The {self.name} dodged your attack! 0 damage dealt.")
+        current_hp+=incoming_damage
+    #gives the enemy a chance to heal itself if its current health is less than
+    # 1/3 its max health, and if it hasn't already healed
+    elif projected_hp <= (self.HP * 0.3) and not is_transformed:
+        print(f"--- WARNING: {self.name} is healing! ---")
+        print(f"The {self.name} glows with a dark aura and hardens its skin.")
+        current_hp, is_transformed = inventory_algorithm(["health_potion"],"health_potion",current_hp)
         is_transformed = True
-        incoming_damage = incoming_damage // 2 
+    else:
+        outgoing_damage = self.attack()
         
-    return incoming_damage, is_transformed
+        
+    return outgoing_damage, current_hp, is_transformed
 
 
 """ A RPG game that allows the player to do simple things like move, fight, and
@@ -53,12 +62,15 @@ def combat_algorithim(creature1, creature2):
             
     Side Effects:
         Can reduce HP of creatures 1 and 2
+    
+    Written by Moshe Lederman
     """
     
-    c1HP = creature1.getHP
-    c2HP = creature2.getHP
+    c1HP = creature1.HP
+    c2HP = creature2.HP
     
     currentturn = "c1"
+    used_heal = False
     
     while c1HP > 0 or c2HP > 0:
         if currentturn == "c1":
@@ -82,7 +94,7 @@ def combat_algorithim(creature1, creature2):
                 print(f"The {creature2.name} is frozen and loses its turn!")
                 continue
             else:
-                dmg = enemy_intelligence()
+                dmg, c2HP, used_heal = creature2.enemy_reaction(dmg, c2HP, used_heal)
                 c1HP-= (dmg-c1armor)
                 currentturn = "c1"
             
