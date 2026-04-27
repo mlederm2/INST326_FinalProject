@@ -68,7 +68,7 @@ def combat_algorithim(creature1, creature2):
                 c2HP -= dmg
             elif action == "Use Inventory":
                 item = input("Please choose what item to use: \n health_potion, mega_potion, or freeze_orb")
-                c1HP, enemy_frozen = inventory_algorithm(creature1.inventory(), item, c1HP)
+                c1HP, enemy_frozen = inventory_algorithm(creature1.inventory, item, c1HP)
             elif action == "Defend":
                 c1armor += 1
             else:
@@ -79,7 +79,7 @@ def combat_algorithim(creature1, creature2):
         if currentturn == "c2":
             if enemy_frozen:
                 currentturn = "c1"
-                print(f"The {creature2.name()} is frozen and loses its turn!")
+                print(f"The {creature2.name} is frozen and loses its turn!")
                 continue
             else:
                 dmg = enemy_intelligence()
@@ -189,10 +189,45 @@ def move_player(position: tuple[int, int], direction: str, game_map:
 
 
 class Creature:
+    """
+    A default creature that can be used for both the player and enemies for the game
+    
+    Attributes:
+            name (str): the name of the creature
+            primeWeapon (dict): a dictionary containing the stats for a weapon, including name and damage
+            HP (int): the HP of the creature
+            inventory (list): a list of items that the creature has in their inventory
 
-    def attack(self):
-        return 5
-    def getname(self):
-        return "I am a robot beep boop bop"
-    def inventory(self):
-        return ["health_potion","health_potion","health_potion","health_potion"]
+    """
+
+    def __init__(self, name, pweapon, maxHP):
+        """_summary_
+
+        Args:
+            name (str): the name of the creature
+            pweapon (dict): a dictionary containing the stats for a weapon, including name and damage
+            maxHP (int): the maximum HP of the creature
+            inventory (list): a list of items that the creature has in their inventory
+        
+        Side Effects:
+            Creates a new creature object
+        """
+        self.name = name
+        self.primeWeapon = pweapon
+        self.HP = maxHP
+        self.inventory = []
+        
+    def attack(self, weapon = self.primeWeapon):
+        """
+        Use the primary weapon of the creature to deal damage equal to the weapon's damage stat
+        """
+        damage = weapon["Damage"]
+        return damage
+    
+    def pickUp (self, object):
+        """
+        Add new items to the inventory of the character
+        """
+        self.inventory.append(object)
+
+

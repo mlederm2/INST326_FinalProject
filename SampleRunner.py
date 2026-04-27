@@ -1,0 +1,17 @@
+Enemy1 = {
+    "Name": "Warrior",
+    "Weapon" : {
+        "Name" : "Sword",
+        "Damage" : "5"
+    },
+    "HP" : 40
+}
+
+Enemy2 = {
+    "Name": "Boss",
+    "Weapon" : {
+        "Name" : "BetterSword",
+        "Damage" : "7"
+    },
+    "HP" : 60
+}
