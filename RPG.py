@@ -83,6 +83,9 @@ def combat_algorithim(creature1, creature2):
                 c1HP, enemy_frozen = inventory_algorithm(creature1.inventory, item, c1HP)
             elif action == "Defend":
                 c1armor += 1
+            elif action == 'POWERWORDKILL':
+                print("POWERWORDKILL used, combat ended")
+                c2HP = 0
             else:
                 print("Sorry that action isn't defined, please try again")
                 continue
