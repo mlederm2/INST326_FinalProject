@@ -53,8 +53,11 @@ class RPG:
     
 >>>>>>> 1a49229eb61d7e4bf440a3140eb08a46b7e75fac
 
-def move_player(position: tuple[int, int], direction: str, game_map: 
-        list[list[str]]) -> tuple[int, int]:
+def move_player(
+    position: tuple[int, int], 
+    direction: str, 
+    game_map: list[list[str]]
+) -> tuple[int, int]:
     """
     An algorithm that controls how the player moves around the map.
 
@@ -64,14 +67,12 @@ def move_player(position: tuple[int, int], direction: str, game_map:
     the player stays in the same spot.
 
     Args:
-        position (tuple[int, int]): The player’s current location on the map.
-        direction (str): The direction the player wants to move 
-        ("up", "down", "left", "right").
-        game_map (list[list[str]]): A grid that represents the map and 
-        shows open or blocked spaces.
+        position: Current (row, column) of the player
+        direction: Direction to move ("up", "down", "left", "right")
+        game_map: 2D grid representing the map
 
     Returns:
-        tuple[int, int]: The updated position of the player after the move.
+        The new (row, column) position after attempting the move
 
     Raises:
         ValueError: If the direction is invalid.
@@ -85,23 +86,23 @@ def move_player(position: tuple[int, int], direction: str, game_map:
         "left": (0, -1),
         "right": (0, 1)
     }
-
+    # Validate direction
     if direction not in moves:
         raise ValueError("Invalid direction. Choose up, down, left, or right.")
-
+    
+    #Calculate new position
     d_row, d_col = moves[direction]
     new_row = row + d_row
     new_col = col + d_col
 
-    for r in range(len(game_map)):
-        for c in range(len(game_map[0])):
-
-            if r == new_row and c == new_col:
-
-                
-                if game_map[r][c] != "#":
-                    return (r, c)
-
-                return position
-
-    return position
+    # Check map boundaries 
+    if new_row < 0 or new_row >= len(game_map):
+        return position
+    if new_col < 0 or new_col >= len(game_map[0]): 
+        return position
+    #Check if the tile is blocked 
+    if game_map[new_row][new_col] == "#": 
+        return position
+    
+    #Move is valid
+    return (new_row, new_col)
