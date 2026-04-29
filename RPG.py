@@ -1,4 +1,5 @@
 import random
+import Creature
 
 def enemy_reaction(self, incoming_damage, current_hp, is_transformed):
     """
