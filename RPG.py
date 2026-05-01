@@ -1,8 +1,27 @@
 import random
 import Creature
+import json
+import YouKilledMe
 
 
 class RPG:
+    
+    def __init__(self, player, enemy_file, map_file):
+        
+        linelist=[]
+        with open(map_file, "r", encoding="utf-8") as infile:
+            for line in infile:        
+                for character in line:
+                    linelist.append(character)
+            self.map.append(linelist)
+            
+        with open(enemy_file, "r", encoding="utf-8") as enemies:
+                self.enemy = json.load(enemies)
+                
+        
+        self.player_char = player
+
+    
     def enemy_reaction(self, incoming_damage, current_hp, is_transformed):
         """
             Handles the enemy's combative response when attacked.
@@ -33,7 +52,7 @@ class RPG:
         elif projected_hp <= (self.HP * 0.3) and not is_transformed:
             print(f"--- WARNING: {self.name} is healing! ---")
             print(f"The {self.name} glows with a dark aura and hardens its skin.")
-            current_hp, is_transformed = inventory_algorithm(["health_potion"],"health_potion",current_hp)
+            current_hp, is_transformed = self.inventory_algorithm(["health_potion"],"health_potion",current_hp)
             is_transformed = True
         else:
             outgoing_damage = self.attack()
@@ -122,7 +141,7 @@ class RPG:
                     c2HP -= dmg
                 elif action == "Use Inventory":
                     item = input("Please choose what item to use: \n health_potion, mega_potion, or freeze_orb")
-                    c1HP, enemy_frozen = inventory_algorithm(creature1.inventory, item, c1HP)
+                    c1HP, enemy_frozen = self.inventory_algorithm(creature1.inventory, item, c1HP)
                 elif action == "Defend":
                     c1armor += 1
                 elif action == 'POWERWORDKILL':
@@ -186,6 +205,10 @@ class RPG:
             "left": (0, -1),
             "right": (0, 1)
         }
+        
+        if direction == "POWERWORDKILL":
+            raise YouKilledMe.YouKilledMe
+        
         # Validate direction
         if direction not in moves:
             raise ValueError("Invalid direction. Choose up, down, left, or right.")
@@ -221,7 +244,7 @@ class RPG:
     def start_combat(self, enemy_pos):
         print(f"Encountered enemy at {enemy_pos}!")
         print("Combat started!")
-        test = bigfile["Enemy1"]
+        test = self.enemy["Enemy1"]
         
         
         enemy = Creature(test["Name"], test["Weapon"], test["HP"])
@@ -229,5 +252,6 @@ class RPG:
         self.combat_algorithim(PLAYER, enemy)
         # You can expand this later with HP and attacks)
 
-
+def main():
+    pass
 
