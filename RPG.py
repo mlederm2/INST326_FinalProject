@@ -180,24 +180,24 @@ class RPG:
         """
         An algorithm that controls how the player moves around the map.
 
-        It checks the direction the player wants to move and makes sure the move is
-        valid.
-        If the space is open and within the map, the player moves there. If not, 
-        the player stays in the same spot.
+    It checks the direction the player wants to move and makes sure the move is
+    valid.
+    If the space is open and within the map, the player moves there. If not, 
+    the player stays in the same spot.
 
-        Args:
-            position: Current (row, column) of the player
-            direction: Direction to move ("up", "down", "left", "right")
-            game_map: 2D grid representing the map
+    Args:
+        position: Current (row, column) of the player
+        direction: Direction to move ("up", "down", "left", "right")
+        game_map: 2D grid representing the map
 
-        Returns:
-            The new (row, column) position after attempting the move
+    Returns:
+        The new (row, column) position after attempting the move
 
-        Raises:
-            ValueError: If the direction is invalid.
-        """
+    Raises:
+        ValueError: If the direction is invalid.
+    """
 
-        row, col = position
+    row, col = position
 
         moves = {
             "up": (-1, 0),
