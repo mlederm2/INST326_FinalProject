@@ -252,9 +252,60 @@ class RPG:
         self.combat_algorithim(PLAYER, enemy)
         # You can expand this later with HP and attacks)
 
-def main():
-    pass
+    def main():
+        pass
+    
+    # Map set up
+    map_data = [
+        list("###############"),
+        list("#.....#.......#"),
+        list("#..E..#..#....#"),
+        list("#.....#..#....#"),
+        list("#..#####..#...#"),
+        list("#.............#"),
+        list("#..P......E...#"),
+        list("###############")
+    ]
 
+    # Find player start position
+    for r in range(len(map_data)):
+        for c in range(len(map_data[r])):
+            if map_data[r][c] == "P":
+                player_pos = [r, c]
 
-#this comment line should replicate the error when I try to save this please
+    def display_map(map_data):
+        for row in map_data:
+            print("".join(row))
 
+    def move_player(direction, map_data):
+        global player_pos
+
+        moves = {
+            "w": (-1, 0),  # up
+            "s": (1, 0),   # down
+            "a": (0, -1),  # left
+            "d": (0, 1)    # right
+        }
+
+        if direction not in moves:
+            return
+
+        dr, dc = moves[direction]
+        new_r = player_pos[0] + dr
+        new_c = player_pos[1] + dc
+
+        # Check wall
+        if map_data[new_r][new_c] != "#":
+            map_data[player_pos[0]][player_pos[1]] = "."
+            player_pos = [new_r, new_c]
+            map_data[new_r][new_c] = "P"
+
+    # Game loop
+    while True:
+        display_map()
+        move = input("Move (W/A/S/D, Q to quit): ").lower()
+
+        if move == "q":
+            break
+
+        move_player(move)
