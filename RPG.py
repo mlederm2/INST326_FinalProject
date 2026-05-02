@@ -180,24 +180,24 @@ class RPG:
         """
         An algorithm that controls how the player moves around the map.
 
-    It checks the direction the player wants to move and makes sure the move is
-    valid.
-    If the space is open and within the map, the player moves there. If not, 
-    the player stays in the same spot.
+        It checks the direction the player wants to move and makes sure the move is
+        valid.
+        If the space is open and within the map, the player moves there. If not, 
+        the player stays in the same spot.
 
-    Args:
-        position: Current (row, column) of the player
-        direction: Direction to move ("up", "down", "left", "right")
-        game_map: 2D grid representing the map
+        Args:
+            position: Current (row, column) of the player
+            direction: Direction to move ("up", "down", "left", "right")
+            game_map: 2D grid representing the map
 
-    Returns:
-        The new (row, column) position after attempting the move
+        Returns:
+            The new (row, column) position after attempting the move
 
-    Raises:
-        ValueError: If the direction is invalid.
-    """
+        Raises:
+            ValueError: If the direction is invalid.
+        """
 
-    row, col = position
+        row, col = position
 
         moves = {
             "up": (-1, 0),
@@ -254,58 +254,7 @@ class RPG:
 
 def main():
     pass
-    
-    # Map setup
-    map_data = [
-    list("###############"),
-    list("#.....#.......#"),
-    list("#..E..#..#....#"),
-    list("#.....#..#....#"),
-    list("#..#####..#...#"),
-    list("#.............#"),
-    list("#..P......E...#"),
-    list("###############")
-]
-    # Find player start position
-    for r in range(len(map_data)):
-        for c in range(len(map_data[r])):
-            if map_data[r][c] == "P":
-                player_pos = [r, c]
 
-    def display_map():
-        for row in map_data:
-            print("".join(row))
 
-    def move_player(direction):
-        global player_pos
+#this comment line should replicate the error when I try to save this please
 
-        moves = {
-            "w": (-1, 0),  # up
-            "s": (1, 0),   # down
-            "a": (0, -1),  # left
-            "d": (0, 1)    # right
-        }
-
-        if direction not in moves:
-            return
-
-        dr, dc = moves[direction]
-        new_r = player_pos[0] + dr
-        new_c = player_pos[1] + dc
-
-        # Check wall
-        if map_data[new_r][new_c] != "#":
-            # Move player
-            map_data[player_pos[0]][player_pos[1]] = "."
-            player_pos = [new_r, new_c]
-            map_data[new_r][new_c] = "P"
-
-    # Game loop
-    while True:
-        display_map()
-        move = input("Move (W/A/S/D, Q to quit): ").lower()
-
-        if move == "q":
-            break
-
-        move_player(move)
