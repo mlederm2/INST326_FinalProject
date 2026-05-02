@@ -307,8 +307,8 @@ class RPG:
         print(f"'{item_name}' has been removed from your inventory.")
         return player_hp, enemy_frozen
     
-# Map setup
-map_data = [
+    # Map setup
+    map_data = [
     list("###############"),
     list("#.....#.......#"),
     list("#..E..#..#....#"),
@@ -319,46 +319,46 @@ map_data = [
     list("###############")
 ]
 
-# Find player start position
-for r in range(len(map_data)):
-    for c in range(len(map_data[r])):
-        if map_data[r][c] == "P":
-            player_pos = [r, c]
+    # Find player start position
+    for r in range(len(map_data)):
+        for c in range(len(map_data[r])):
+            if map_data[r][c] == "P":
+                player_pos = [r, c]
 
-def display_map():
-    for row in map_data:
-        print("".join(row))
+    def display_map():
+        for row in map_data:
+            print("".join(row))
 
-def move_player(direction):
-    global player_pos
+    def move_player(direction):
+        global player_pos
 
-    moves = {
-        "w": (-1, 0),  # up
-        "s": (1, 0),   # down
-        "a": (0, -1),  # left
-        "d": (0, 1)    # right
-    }
+        moves = {
+            "w": (-1, 0),  # up
+            "s": (1, 0),   # down
+            "a": (0, -1),  # left
+            "d": (0, 1)    # right
+        }
 
-    if direction not in moves:
-        return
+        if direction not in moves:
+            return
 
-    dr, dc = moves[direction]
-    new_r = player_pos[0] + dr
-    new_c = player_pos[1] + dc
+        dr, dc = moves[direction]
+        new_r = player_pos[0] + dr
+        new_c = player_pos[1] + dc
 
-    # Check wall
-    if map_data[new_r][new_c] != "#":
-        # Move player
-        map_data[player_pos[0]][player_pos[1]] = "."
-        player_pos = [new_r, new_c]
-        map_data[new_r][new_c] = "P"
+        # Check wall
+        if map_data[new_r][new_c] != "#":
+            # Move player
+            map_data[player_pos[0]][player_pos[1]] = "."
+            player_pos = [new_r, new_c]
+            map_data[new_r][new_c] = "P"
 
-# Game loop
-while True:
-    display_map()
-    move = input("Move (W/A/S/D, Q to quit): ").lower()
+    # Game loop
+    while True:
+        display_map()
+        move = input("Move (W/A/S/D, Q to quit): ").lower()
 
-    if move == "q":
-        break
+        if move == "q":
+            break
 
-    move_player(move)
+        move_player(move)
