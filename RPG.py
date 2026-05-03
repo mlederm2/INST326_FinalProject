@@ -18,8 +18,18 @@ class RPG:
         with open(enemy_file, "r", encoding="utf-8") as enemies1:
                 self.enemies = json.load(enemies1)
                 
+        self.player_loc = self.find_player()
+                
         
         self.player_char = player
+        
+    def find_player(self):
+        for r in range(len(self.map)):
+            for c in range(len(self.map[r])):
+                if self.map[r][c] == "P":
+                    player_pos = (r, c)
+        return player_pos
+
 
     
     def enemy_reaction(self, incoming_damage, current_hp, is_transformed):
@@ -173,7 +183,6 @@ class RPG:
 
     def move_player(
         self,
-        position: tuple[int, int], 
         direction: str, 
         game_map: list[list[str]]
     ) -> tuple[int, int]:
@@ -196,7 +205,7 @@ class RPG:
         Raises:
             ValueError: If the direction is invalid.
         """
-
+        position = self.player_loc
         row, col = position
 
         moves = {
@@ -220,26 +229,26 @@ class RPG:
 
         # Check map boundaries 
         if new_row < 0 or new_row >= len(game_map):
-            return position
+            self.player_loc = position
         if new_col < 0 or new_col >= len(game_map[0]): 
-            return position
+            self.player_loc = position
         
         tile = game_map[new_row][new_col]
         
         #Enemy detection 
         if tile == "E":
             self.start_combat((new_row, new_col))
-            return position # stay in place during combat 
+            self.player_loc = position # stay in place during combat 
             #Moshe -- Does it make sense to move the player into the space the 
                 #enemy was in after combat finishes assuming that the player wins?
                 #it is possible for the player to lose combat.
         
         #Check if the tile is blocked 
         if tile == "#":
-            return position
+            self.player_loc = position
 
         #Move is valid
-        return (new_row, new_col)
+        self.player_loc = (new_row, new_col)
 
     def start_combat(self, enemy_pos):
         print(f"Encountered enemy at {enemy_pos}!")
@@ -253,27 +262,26 @@ class RPG:
         # You can expand this later with HP and attacks)
     
     # Map set up
-    map_data = [
-        list("###############"),
-        list("#.....#.......#"),
-        list("#..E..#..#....#"),
-        list("#.....#..#....#"),
-        list("#..#####..#...#"),
-        list("#.............#"),
-        list("#..P......E...#"),
-        list("###############")
-    ]
-
-    # Find player start position
-    for r in range(len(map_data)):
-        for c in range(len(map_data[r])):
-            if map_data[r][c] == "P":
-                player_pos = [r, c]
-
+    # Moshe - We don't need this, map data is in a file, and also a class attribute
+    # map_data = [
+    #     list("###############"),
+    #     list("#.....#.......#"),
+    #     list("#..E..#..#....#"),
+    #     list("#.....#..#....#"),
+    #     list("#..#####..#...#"),
+    #     list("#.............#"),
+    #     list("#..P......E...#"),
+    #     list("###############")
+    # ]
+    
     def display_map(self):
         for row in self.map:
             print("".join(row))
 
+
+    #this is the duplicated function, it has moves, allows the player to move
+    #and moves the player on the map, but it doesn't have support for enemy attack
+    #unclear why thats missing.
     def move_player(direction, map_data):
         global player_pos
 

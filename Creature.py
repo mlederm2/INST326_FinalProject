@@ -27,7 +27,9 @@ class Creature:
         self.HP = maxHP
         self.inventory = []
         
-    def attack(self, weapon = self.primeWeapon):
+    def attack(self):
+        
+        weapon = self.primeWeapon
         """
         Use the primary weapon of the creature to deal damage equal to the weapon's damage stat
         """
