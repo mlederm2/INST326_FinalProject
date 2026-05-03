@@ -24,6 +24,7 @@ class RPG:
         Written by Moshe Lederman
         """
         linelist=[]
+        self.map = []
         with open(map_file, "r", encoding="utf-8") as infile:
             for line in infile:        
                 for character in line:
@@ -35,8 +36,11 @@ class RPG:
                 
         self.player_loc = self.find_player()
                 
-        
-        self.player_char = player
+        with open(player, "r", encoding="utf-8") as players:
+                player1 = json.load(players)
+                
+        player1 = player1["Player1"]
+        self.player_char = Creature(player1["Name"], player1["Weapon"], player1["HP"])
         
         
     def find_player(self):
@@ -361,7 +365,7 @@ def parse_args(arglist):
 
 def main(playerstats, enemyfile, mapfile):
     
-    mainGame = RPG(Creature(playerstats), enemyfile, mapfile)
+    mainGame = RPG(playerstats, enemyfile, mapfile)
     mainGame.display_map()
     
     # Game loop
