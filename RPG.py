@@ -2,12 +2,27 @@ import random
 import Creature
 import json
 import YouKilledMe
+from argparse import ArgumentParser
+import sys
 
 
 class RPG:
     
     def __init__(self, player, enemy_file, map_file):
+        """init method to initialize a new RPG game 
+
+        Args:
+            player Creature: the Creature for the Player
+            enemy_file (str): a filepath to a JSON file that contains all stats  
+                and info about the enemies for the game
+            map_file (str): a filepath to a txt file that contains the map area 
+                for the game
+                
+        Side Effects:
+            creates a new RPG game with all attributes
         
+        Written by Moshe Lederman
+        """
         linelist=[]
         with open(map_file, "r", encoding="utf-8") as infile:
             for line in infile:        
@@ -23,7 +38,16 @@ class RPG:
         
         self.player_char = player
         
+        
     def find_player(self):
+        """Find player location in map file
+
+        Returns:
+            tuple: tuple of the coordinates where the player starts according to
+                the map file.
+        
+        Written by Jennifer Ruano, minor edits by Moshe Lederman
+        """
         for r in range(len(self.map)):
             for c in range(len(self.map[r])):
                 if self.map[r][c] == "P":
@@ -71,12 +95,6 @@ class RPG:
         return outgoing_damage, current_hp, is_transformed
 
 
-    """ A RPG game that allows the player to do simple things like move, fight, and
-    use an inventory
-
-
-    """
-
     def inventory_algorithm(inventory, item_name, player_hp):
         """ 
         This algorithm provides a list of inventories. When a player requests an item, it
@@ -90,7 +108,9 @@ class RPG:
         enemy_frozen: Enemy freeze status.
 
         Returns:
-        The updated status of the player and enemy frozen status.
+            The updated status of the player and enemy frozen status.
+        
+        Written by Joel Chomnou, minor edits by Moshe Lederman
         """
         enemy_frozen = False
 
@@ -184,7 +204,6 @@ class RPG:
     def move_player(
         self,
         direction: str, 
-        game_map: list[list[str]]
     ) -> tuple[int, int]:
         """
         An algorithm that controls how the player moves around the map.
@@ -204,15 +223,17 @@ class RPG:
 
         Raises:
             ValueError: If the direction is invalid.
+            
+        Written by Jennifer Ruano, minor edits by Moshe Lederman
         """
         position = self.player_loc
         row, col = position
 
         moves = {
-            "up": (-1, 0),
-            "down": (1, 0),
-            "left": (0, -1),
-            "right": (0, 1)
+            "w": (-1, 0),  # up
+            "s": (1, 0),   # down
+            "a": (0, -1),  # left
+            "d": (0, 1)    # right
         }
         
         if direction == "POWERWORDKILL":
@@ -228,12 +249,12 @@ class RPG:
         new_col = col + d_col
 
         # Check map boundaries 
-        if new_row < 0 or new_row >= len(game_map):
+        if new_row < 0 or new_row >= len(self.map):
             self.player_loc = position
-        if new_col < 0 or new_col >= len(game_map[0]): 
+        if new_col < 0 or new_col >= len(self.map[0]): 
             self.player_loc = position
         
-        tile = game_map[new_row][new_col]
+        tile = self.map[new_row][new_col]
         
         #Enemy detection 
         if tile == "E":
@@ -253,6 +274,14 @@ class RPG:
         self.map[new_row][new_col] = "P"
 
     def start_combat(self, enemy_pos):
+        """ Declares combat and calls the full combat algorithm, creates the enemy Creature
+
+        Args:
+            enemy_pos (tuple): a tuple of coordinates that are the position of
+                the enemy creature that the player is fighting
+        
+        Written by Moshe Lederman, Edits by Jennifer Ruano
+        """
         print(f"Encountered enemy at {enemy_pos}!")
         print("Combat started!")
         test = self.enemies["Enemy1"]
@@ -260,7 +289,7 @@ class RPG:
         
         enemy = Creature(test["Name"], test["Weapon"], test["HP"])
         
-        self.combat_algorithim(PLAYER, enemy)
+        self.combat_algorithim(self.player_char, enemy)
         # You can expand this later with HP and attacks)
     
     # Map set up
@@ -277,6 +306,9 @@ class RPG:
     # ]
     
     def display_map(self):
+        """
+        Short method to print the current state of the map
+        """
         for row in self.map:
             print("".join(row))
 
@@ -284,38 +316,62 @@ class RPG:
     #this is the duplicated function, it has moves, allows the player to move
     #and moves the player on the map, but it doesn't have support for enemy attack
     #unclear why thats missing.
-    def move_player(direction, map_data):
-        global player_pos
+    # def move_player(direction, map_data):
+    #     global player_pos
 
-        moves = {
-            "w": (-1, 0),  # up
-            "s": (1, 0),   # down
-            "a": (0, -1),  # left
-            "d": (0, 1)    # right
-        }
+    #     moves = {
+    #         "w": (-1, 0),  # up
+    #         "s": (1, 0),   # down
+    #         "a": (0, -1),  # left
+    #         "d": (0, 1)    # right
+    #     }
 
-        if direction not in moves:
-            return
+    #     if direction not in moves:
+    #         return
 
-        dr, dc = moves[direction]
-        new_r = player_pos[0] + dr
-        new_c = player_pos[1] + dc
+    #     dr, dc = moves[direction]
+    #     new_r = player_pos[0] + dr
+    #     new_c = player_pos[1] + dc
 
-        # Check wall
-        if map_data[new_r][new_c] != "#":
-            map_data[player_pos[0]][player_pos[1]] = "."
-            player_pos = [new_r, new_c]
-            map_data[new_r][new_c] = "P"
+    #     # Check wall
+    #     if map_data[new_r][new_c] != "#":
+    #         map_data[player_pos[0]][player_pos[1]] = "."
+    #         player_pos = [new_r, new_c]
+    #         map_data[new_r][new_c] = "P"
+
+def parse_args(arglist):
+    """Parse command-line arguments.
+    
+    Expects one mandatory command-line argument: a path to a text file where
+    each line consists of a name, a tab character, and a phone number.
+    
+    Args:
+        arglist (list of str): a list of command-line arguments to parse.
+        
+    Returns:
+        argparse.Namespace: a namespace object with a file attribute whose value
+        is a path to a text file as described above.
+    """
+    parser = ArgumentParser()
+    parser.add_argument("playerStats", help="JSON file containing player information and stats")
+    parser.add_argument("enemyfile", help="JSON file of enemies and stats")
+    parser.add_argument("mapfile", help="txt file with a map of the game area")
+    return parser.parse_args(arglist)
 
 
-def main():
-    pass
+def main(playerstats, enemyfile, mapfile):
+    
+    mainGame = RPG(Creature(playerstats), enemyfile, mapfile)
+    mainGame.display_map()
+    
     # Game loop
     while True:
-        display_map()
-        move = input("Move (W/A/S/D, Q to quit): ").lower()
+        mainGame.display_map()
+        move = input("Move (W/A/S/D): ").lower()
+        mainGame.move_player(move)
 
-        if move == "q":
-            break
-
-        move_player(move)
+        
+        
+if __name__ == "__main__":
+    args = parse_args(sys.argv[1:])
+    main(args.playerStats, args.enemyfile, args.mapfile)
