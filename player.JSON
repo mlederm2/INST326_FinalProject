@@ -1,0 +1,10 @@
+{
+    "Player1": {
+        "Name": "Player1",
+        "Weapon" : {
+            "Name" : "Sword",
+            "Damage" : "8"
+        },
+        "HP" : 40
+    }
+}
