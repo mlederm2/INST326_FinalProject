@@ -249,6 +249,8 @@ class RPG:
 
         #Move is valid
         self.player_loc = (new_row, new_col)
+        self.map[self.player_loc[0]][self.player_loc[1]] = "."
+        self.map[new_row][new_col] = "P"
 
     def start_combat(self, enemy_pos):
         print(f"Encountered enemy at {enemy_pos}!")
