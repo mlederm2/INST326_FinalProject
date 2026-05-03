@@ -10,7 +10,7 @@ class Creature:
 
     """
 
-    def __init__(self, name, pweapon, maxHP):
+    def __init__(self, name, pweapon, maxHP, inventory = []):
         """_summary_
 
         Args:
@@ -25,7 +25,7 @@ class Creature:
         self.name = name
         self.primeWeapon = pweapon
         self.HP = maxHP
-        self.inventory = []
+        self.inventory = inventory
         
     def attack(self):
         
