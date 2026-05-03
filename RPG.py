@@ -15,8 +15,8 @@ class RPG:
                     linelist.append(character)
             self.map.append(linelist)
             
-        with open(enemy_file, "r", encoding="utf-8") as enemies:
-                self.enemy = json.load(enemies)
+        with open(enemy_file, "r", encoding="utf-8") as enemies1:
+                self.enemies = json.load(enemies1)
                 
         
         self.player_char = player
@@ -244,16 +244,13 @@ class RPG:
     def start_combat(self, enemy_pos):
         print(f"Encountered enemy at {enemy_pos}!")
         print("Combat started!")
-        test = self.enemy["Enemy1"]
+        test = self.enemies["Enemy1"]
         
         
         enemy = Creature(test["Name"], test["Weapon"], test["HP"])
         
         self.combat_algorithim(PLAYER, enemy)
         # You can expand this later with HP and attacks)
-
-    def main():
-        pass
     
     # Map set up
     map_data = [
@@ -273,8 +270,8 @@ class RPG:
             if map_data[r][c] == "P":
                 player_pos = [r, c]
 
-    def display_map(map_data):
-        for row in map_data:
+    def display_map(self):
+        for row in self.map:
             print("".join(row))
 
     def move_player(direction, map_data):
@@ -300,6 +297,9 @@ class RPG:
             player_pos = [new_r, new_c]
             map_data[new_r][new_c] = "P"
 
+
+def main():
+    pass
     # Game loop
     while True:
         display_map()
