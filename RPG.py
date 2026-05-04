@@ -99,7 +99,7 @@ class RPG:
         return outgoing_damage, current_hp, is_transformed
 
 
-    def inventory_algorithm(inventory, item_name, player_hp):
+    def inventory_algorithm(self, inventory, item_name, player_hp):
         """ 
         This algorithm provides a list of inventories. When a player requests an item, it
         checks the inventory list to see if it is available or not and applies it. When applied, the
