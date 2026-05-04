@@ -279,8 +279,8 @@ class RPG:
             self.player_loc = position
 
         #Move is valid
-        self.player_loc = (new_row, new_col)
         self.map[self.player_loc[0]][self.player_loc[1]] = "."
+        self.player_loc = (new_row, new_col)
         self.map[new_row][new_col] = "P"
 
     def start_combat(self, enemy_pos):
@@ -322,32 +322,6 @@ class RPG:
         for row in self.map:
             print("".join(row))
 
-
-    #this is the duplicated function, it has moves, allows the player to move
-    #and moves the player on the map, but it doesn't have support for enemy attack
-    #unclear why thats missing.
-    # def move_player(direction, map_data):
-    #     global player_pos
-
-    #     moves = {
-    #         "w": (-1, 0),  # up
-    #         "s": (1, 0),   # down
-    #         "a": (0, -1),  # left
-    #         "d": (0, 1)    # right
-    #     }
-
-    #     if direction not in moves:
-    #         return
-
-    #     dr, dc = moves[direction]
-    #     new_r = player_pos[0] + dr
-    #     new_c = player_pos[1] + dc
-
-    #     # Check wall
-    #     if map_data[new_r][new_c] != "#":
-    #         map_data[player_pos[0]][player_pos[1]] = "."
-    #         player_pos = [new_r, new_c]
-    #         map_data[new_r][new_c] = "P"
 
 def parse_args(arglist):
     """Parse command-line arguments.
