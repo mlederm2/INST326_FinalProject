@@ -93,6 +93,7 @@ class RPG:
             current_hp, is_transformed = self.inventory_algorithm(["health_potion"],"health_potion",current_hp)
             is_transformed = True
         else:
+            #derek put print statements here
             outgoing_damage = enemy_creature.attack()
             
             
@@ -125,11 +126,11 @@ class RPG:
 
         #To apply item effect
         if item_name == "health_potion":
-            player_hp += 50
+            player_hp += 25
             print(f"Used Health Potion! HP restored. Current HP: {player_hp}")
 
         elif item_name == "mega_potion":
-            player_hp += 100
+            player_hp += 50
             print(f"Used Mega Potion! HP fully boosted. Current HP: {player_hp}")
 
         elif item_name == "freeze_orb":
@@ -169,9 +170,9 @@ class RPG:
         enemy_frozen = False
         c1armor = 0
 
-        while c1HP > 0 or c2HP > 0:
+        while c1HP > 0 and c2HP > 0:
             if currentturn == "c1":
-                action = input("Please choose what action you would like to do \n Attack, Use Inventory, Defend \n")
+                action = (input(f"Please choose what action you would like to do \n Attack, Use Inventory, Defend \n you currently have {c1HP} Health and {c1armor} armor\n"))
                 if action == "Attack":
                     dmg = creature1.attack()
                     c2HP -= int(dmg)
@@ -197,7 +198,7 @@ class RPG:
                     continue
                 else:
                     dmg, c2HP, used_heal = self.enemy_reaction(dmg, c2HP, used_heal, creature2)
-                    c1HP-= int(dmg-c1armor)
+                    c1HP-= max(int(dmg-c1armor),0)
                     currentturn = "c1"
                 
                 
