@@ -3,7 +3,7 @@
         "Name": "Player1",
         "Weapon" : {
             "Name" : "Sword",
-            "Damage" : "8"
+            "Damage" : 8
         },
         "HP" : 40
     }

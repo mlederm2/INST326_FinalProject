@@ -3,7 +3,7 @@
         "Name": "Warrior",
         "Weapon" : {
             "Name" : "Sword",
-            "Damage" : "5"
+            "Damage" : 5
         },
         "HP" : 40
     },
@@ -12,7 +12,7 @@
         "Name": "Boss",
         "Weapon" : {
             "Name" : "BetterSword",
-            "Damage" : "7"
+            "Damage" : 7
         },
         "HP" : 60
     }
