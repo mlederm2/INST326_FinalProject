@@ -40,7 +40,7 @@ class RPG:
                 player1 = json.load(players)
                 
         player1 = player1["Player1"]
-        self.player_char = Creature(player1["Name"], player1["Weapon"], player1["HP"])
+        self.player_char = Creature.Creature(player1["Name"], player1["Weapon"], player1["HP"])
         
         
     def find_player(self):
@@ -60,7 +60,7 @@ class RPG:
 
 
     
-    def enemy_reaction(self, incoming_damage, current_hp, is_transformed):
+    def enemy_reaction(self, incoming_damage, current_hp, is_transformed, enemy_creature):
         """
             Handles the enemy's combative response when attacked.
 
@@ -78,18 +78,18 @@ class RPG:
             """
 
         outgoing_damage = 0
-        projected_hp = current_hp - incoming_damage
+        projected_hp = int(current_hp) - int(incoming_damage)
 
         #gives the enemy a random chance to dodge incoming attacks
         if random.random() < 0.20:
             #dodging attacks prevents damage from being dealt
-            print(f"The {self.name} dodged your attack! 0 damage dealt.")
+            print(f"The {enemy_creature.name} dodged your attack! 0 damage dealt.")
             current_hp+=incoming_damage
         #gives the enemy a chance to heal itself if its current health is less than
         # 1/3 its max health, and if it hasn't already healed
-        elif projected_hp <= (self.HP * 0.3) and not is_transformed:
-            print(f"--- WARNING: {self.name} is healing! ---")
-            print(f"The {self.name} glows with a dark aura and hardens its skin.")
+        elif projected_hp <= (enemy_creature.HP * 0.3) and not is_transformed:
+            print(f"--- WARNING: {enemy_creature.name} is healing! ---")
+            print(f"The {enemy_creature.name} glows with a dark aura and hardens its skin.")
             current_hp, is_transformed = self.inventory_algorithm(["health_potion"],"health_potion",current_hp)
             is_transformed = True
         else:
@@ -166,13 +166,14 @@ class RPG:
 
         currentturn = "c1"
         used_heal = False
+        enemy_frozen = False
 
         while c1HP > 0 or c2HP > 0:
             if currentturn == "c1":
                 action = input("Please choose what action you would like to do \n Attack, Use Inventory, Defend \n")
                 if action == "Attack":
                     dmg = creature1.attack()
-                    c2HP -= dmg
+                    c2HP -= int(dmg)
                 elif action == "Use Inventory":
                     item = input("Please choose what item to use: \n health_potion, mega_potion, or freeze_orb")
                     c1HP, enemy_frozen = self.inventory_algorithm(creature1.inventory, item, c1HP)
@@ -192,7 +193,7 @@ class RPG:
                     print(f"The {creature2.name} is frozen and loses its turn!")
                     continue
                 else:
-                    dmg, c2HP, used_heal = creature2.enemy_reaction(dmg, c2HP, used_heal)
+                    dmg, c2HP, used_heal = self.enemy_reaction(dmg, c2HP, used_heal, creature2)
                     c1HP-= (dmg-c1armor)
                     currentturn = "c1"
                 
@@ -240,11 +241,12 @@ class RPG:
             "d": (0, 1)    # right
         }
         
-        if direction == "POWERWORDKILL":
-            raise YouKilledMe.YouKilledMe
+        
         
         # Validate direction
-        if direction not in moves:
+        if direction == "POWERWORDKILL":
+            raise YouKilledMe.YouKilledMe
+        elif direction not in moves:
             raise ValueError("Invalid direction. Choose up, down, left, or right.")
 
         #Calculate new position
@@ -291,7 +293,7 @@ class RPG:
         test = self.enemies["Enemy1"]
         
         
-        enemy = Creature(test["Name"], test["Weapon"], test["HP"])
+        enemy = Creature.Creature(test["Name"], test["Weapon"], test["HP"])
         
         self.combat_algorithim(self.player_char, enemy)
         # You can expand this later with HP and attacks)
@@ -366,7 +368,7 @@ def parse_args(arglist):
 def main(playerstats, enemyfile, mapfile):
     
     mainGame = RPG(playerstats, enemyfile, mapfile)
-    mainGame.display_map()
+    #mainGame.display_map()
     
     # Game loop
     while True:
