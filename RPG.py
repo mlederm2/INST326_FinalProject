@@ -93,7 +93,7 @@ class RPG:
             current_hp, is_transformed = self.inventory_algorithm(["health_potion"],"health_potion",current_hp)
             is_transformed = True
         else:
-            outgoing_damage = self.attack()
+            outgoing_damage = enemy_creature.attack()
             
             
         return outgoing_damage, current_hp, is_transformed
@@ -161,12 +161,13 @@ class RPG:
         Written by Moshe Lederman
         """
 
-        c1HP = creature1.HP
-        c2HP = creature2.HP
+        c1HP = int(creature1.HP)
+        c2HP = int(creature2.HP)
 
         currentturn = "c1"
         used_heal = False
         enemy_frozen = False
+        c1armor = 0
 
         while c1HP > 0 or c2HP > 0:
             if currentturn == "c1":
@@ -174,9 +175,10 @@ class RPG:
                 if action == "Attack":
                     dmg = creature1.attack()
                     c2HP -= int(dmg)
+                    print(f"You attack the creature and deal {dmg} damage")
                 elif action == "Use Inventory":
                     item = input("Please choose what item to use: \n health_potion, mega_potion, or freeze_orb")
-                    c1HP, enemy_frozen = self.inventory_algorithm(creature1.inventory, item, c1HP)
+                    c1HP, enemy_frozen = self.inventory_algorithm(creature1.inventory, item, int(c1HP))
                 elif action == "Defend":
                     c1armor += 1
                 elif action == 'POWERWORDKILL':
@@ -194,7 +196,7 @@ class RPG:
                     continue
                 else:
                     dmg, c2HP, used_heal = self.enemy_reaction(dmg, c2HP, used_heal, creature2)
-                    c1HP-= (dmg-c1armor)
+                    c1HP-= int(dmg-c1armor)
                     currentturn = "c1"
                 
                 
