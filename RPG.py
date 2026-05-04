@@ -247,7 +247,7 @@ class RPG:
         
         
         # Validate direction
-        if direction == "POWERWORDKILL":
+        if direction == "powerwordkill":
             raise YouKilledMe.YouKilledMe
         elif direction not in moves:
             raise ValueError("Invalid direction. Choose up, down, left, or right.")
