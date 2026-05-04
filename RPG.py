@@ -184,6 +184,7 @@ class RPG:
                 elif action == 'POWERWORDKILL':
                     print("POWERWORDKILL used, combat ended")
                     c2HP = 0
+                    break
                 else:
                     print("Sorry that action isn't defined, please try again")
                     continue
