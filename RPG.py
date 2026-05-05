@@ -60,7 +60,8 @@ class RPG:
 
 
     
-    def enemy_reaction(self, incoming_damage, current_hp, is_transformed, enemy_creature):
+    def enemy_reaction(self, is_transformed, enemy_creature, incoming_damage=0, current_hp=30):
+        
         """
             Handles the enemy's combative response when attacked.
 
@@ -93,9 +94,8 @@ class RPG:
             current_hp, is_transformed = self.inventory_algorithm(["health_potion"],"health_potion",current_hp)
             is_transformed = True
         else:
-            #derek put print statements here
             outgoing_damage = enemy_creature.attack()
-            
+            print(f"The creature attacks you and you take {incoming_damage}")
             
         return outgoing_damage, current_hp, is_transformed
 
