@@ -56,6 +56,8 @@ class RPG:
             is_transformed = True
         else:
             outgoing_damage = self.attack()
+            print(f"The creature attacks you and you take {outgoing_damage}")
+
             
             
         return outgoing_damage, current_hp, is_transformed
