@@ -8,12 +8,12 @@ class RPG:
     
     def __init__(self, player, enemy_file, map_file):
         
-        self.map=[]
-        
+        linelist=[]
         with open(map_file, "r", encoding="utf-8") as infile:
-            for line in infile:
-                row = list(line.strip())
-                self.map.append(row)
+            for line in infile:        
+                for character in line:
+                    linelist.append(character)
+            self.map.append(linelist)
             
         with open(enemy_file, "r", encoding="utf-8") as enemies:
                 self.enemy = json.load(enemies)
@@ -67,7 +67,7 @@ class RPG:
 
     """
 
-    def inventory_algorithm(self,inventory, item_name, player_hp):
+    def inventory_algorithm(inventory, item_name, player_hp):
         """ 
         This algorithm provides a list of inventories. When a player requests an item, it
         checks the inventory list to see if it is available or not and applies it. When applied, the
@@ -254,63 +254,7 @@ class RPG:
 
 def main():
     pass
-    
-    # Map set up
-    map_data = [
-        list("###############"),
-        list("#.....#.......#"),
-        list("#..E..#..#....#"),
-        list("#.....#..#....#"),
-        list("#..#####..#...#"),
-        list("#.............#"),
-        list("#..P......E...#"),
-        list("###############")
-    ]
 
-    # Find player start position
-    for r in range(len(map_data)):
-        for c in range(len(map_data[r])):
-            if map_data[r][c] == "P":
-                player_pos = [r, c]
 
-    def display_map(map_data):
-        for row in map_data:
-            print("".join(row))
+#this comment line should replicate the error when I try to save this please
 
-    def move_player(direction, map_data):
-        global player_pos
-
-        moves = {
-            "w": (-1, 0),  # up
-            "s": (1, 0),   # down
-            "a": (0, -1),  # left
-            "d": (0, 1)    # right
-        }
-
-        if direction not in moves:
-            return
-
-        dr, dc = moves[direction]
-        new_r = player_pos[0] + dr
-        new_c = player_pos[1] + dc
-
-        # Check wall
-        if map_data[new_r][new_c] != "#":
-            map_data[player_pos[0]][player_pos[1]] = "."
-            player_pos = [new_r, new_c]
-            map_data[new_r][new_c] = "P"
-
-    # Game loop
-    while True:
-        display_map()
-        move = input("Move (W/A/S/D, Q to quit): ").lower()
-
-        if move == "q":
-            break
-
-        move_player(move)
-        
-        
-        
-        
-    
