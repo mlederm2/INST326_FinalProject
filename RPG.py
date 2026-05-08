@@ -67,7 +67,12 @@ class RPG:
             is_transformed (bool): Whether the monster has already mutated.
             
         Returns:
-            tuple: (Damage Dealt, Current Health)
+            int: Outgoing Damage
+            int: current HP of the creature
+            Bool: boolean of whether the creature has used its health potion yet
+            
+        Side Effects:
+            calls inventory algorithim
             
         Written By Derek Happy, Edits by Moshe Lederman
             """
@@ -109,6 +114,10 @@ class RPG:
 
         Returns:
         The updated status of the player and enemy frozen status.
+        
+        Side Effects:
+            Can remove items from a Creature's inventory
+        
         Written by Joel Chomnou, minor edits by Moshe Lederman
         """
         enemy_frozen = False
@@ -151,7 +160,10 @@ class RPG:
                 fighting, has HP, and inventory attributes
                 
         Side Effects:
-            Can reduce HP of creatures 1 and 2
+            Calls inventory algorithim
+            requires inputs
+            Calls enemy_reaction
+            
 
         Written by Moshe Lederman
         """
@@ -226,6 +238,9 @@ class RPG:
 
         Raises:
             ValueError: If the direction is invalid.
+            
+        Side Effects:
+            Changes self.map to show current location of the player
         Written by Jennifer Ruano, minor edits by Moshe Lederman
         """
         position = self.player_loc
@@ -237,9 +252,6 @@ class RPG:
             "a": (0, -1),  # left
             "d": (0, 1)    # right
         }
-        
-        if direction == "POWERWORDKILL":
-            raise YouKilledMe.YouKilledMe
         
         # Validate direction
         if direction == "powerwordkill":
@@ -284,6 +296,9 @@ class RPG:
         Args:
             enemy_pos (tuple): a tuple of coordinates that are the position of
                 the enemy creature that the player is fighting
+                
+        Side Effects:
+            reads self.enemies and creates an enemy from the file
         
         Written by Moshe Lederman, Edits by Jennifer Ruano
         """
@@ -300,6 +315,9 @@ class RPG:
     def display_map(self):
         """
         Short method to print the current state of the map
+        
+        Side Effects:
+            prints the map
         """
         for row in self.map:
             print("".join(row))
@@ -327,6 +345,16 @@ def parse_args(arglist):
 
 
 def main(playerstats, enemyfile, mapfile):
+    """_summary_
+
+    Args:
+        playerstats (str): filepath to file of player stats
+        enemyfile (str): filepath to file of enemy stats
+        mapfile (str): filepath to file of map
+        
+    Side Effects:
+        creates new RPG object and runs a game
+    """
     
     mainGame = RPG(playerstats, enemyfile, mapfile)
     #mainGame.display_map()
