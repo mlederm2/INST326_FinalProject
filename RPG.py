@@ -22,7 +22,7 @@ class RPG:
         
         Written by Moshe Lederman
         """
-        linelist=[]
+
         self.map=[]
         
         with open(map_file, "r", encoding="utf-8") as infile:
@@ -55,7 +55,7 @@ class RPG:
                     player_pos = (r, c)
         return player_pos
     
-    def enemy_reaction(self, incoming_damage, current_hp, is_transformed, enemy_creature):
+    def enemy_reaction(self, enemy_creature, current_hp, is_transformed=False, incoming_damage=0):
         """
             Handles the enemy's combative response when attacked.
 
@@ -191,7 +191,7 @@ class RPG:
                     print(f"The {creature2.name} is frozen and loses its turn!")
                     continue
                 else:
-                    dmg, c2HP, used_heal = self.enemy_reaction(dmg, c2HP, used_heal)
+                    dmg, c2HP, used_heal = self.enemy_reaction(creature2, c2HP, used_heal, dmg)
                     c1HP-= max(int(dmg-c1armor),0)
                     currentturn = "c1"
                 
