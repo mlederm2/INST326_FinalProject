@@ -320,8 +320,8 @@ class RPG:
         Side Effects:
             prints the map
         """
-        for row in self.map:
-            print("".join(row))
+        [print("".join(row)) for row in self.map]
+            
 
 
 
