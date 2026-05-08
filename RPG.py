@@ -241,6 +241,7 @@ class RPG:
             
         Side Effects:
             Changes self.map to show current location of the player
+            
         Written by Jennifer Ruano, minor edits by Moshe Lederman
         """
         position = self.player_loc
